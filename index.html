@@ -66,7 +66,7 @@
   </audio>
 
   <!-- Botón música (también fuera de #contenido para que no desaparezca) -->
-  <button class="boton musica" id="btnMusica" onclick="toggleMusica()">🎵 Reproducir música</button>
+  <button class="boton musica" id="btnMusica" onclick="toggleMusica()">🎵</button>
 
   <!-- Todo lo que cambia va aquí -->
   <div id="contenido">
@@ -122,11 +122,11 @@
 
       if (audio.paused) {
         audio.play()
-          .then(() => { btn.innerText = "⏸️ Pausar música"; })
+          .then(() => { btn.innerText = "⏸️"; })
           .catch(() => { alert("Tu navegador bloqueó la reproducción. Toca el botón otra vez."); });
       } else {
         audio.pause();
-        btn.innerText = "🎵 Reproducir música";
+        btn.innerText = "🎵";
       }
     }
 
