@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Para Conejita Armonía 🐰💖</title>
+  <title>🐰 Para Conejita Armonía 💖</title>
 
   <style>
     body {
@@ -15,18 +15,24 @@
       padding: 20px;
     }
 
-    h1 { font-size: 2em; }
+    h1 { font-size: 2em; margin-top: 20px; }
 
     .flor {
       position: absolute;
       width: 50px;
       animation: crecer 3s linear infinite;
       pointer-events: none;
+      z-index: 0;
     }
 
     @keyframes crecer {
       0% { transform: scale(0); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
+    }
+
+    #contenido {
+      position: relative;
+      z-index: 1;
     }
 
     .boton {
@@ -44,29 +50,34 @@
     .musica {
       background-color: white;
       border: 2px solid #ff69b4;
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 2;
     }
   </style>
 </head>
 
 <body>
-  <h1>Conejita Armonía 🐰💕, ¿quieres ser mi San Valentín? 🥺</h1>
-
-  <img id="kirby" src="kirby.png" width="150" alt="Kirby" />
-  <br />
-
-  <button class="boton si" onclick="aceptar()">Sí 💖</button>
-  <button class="boton no" onclick="rechazar()">No 😭</button>
-
-  <br />
-
-  <!-- Botón para música -->
-  <button class="boton musica" id="btnMusica" onclick="toggleMusica()">🎵 Reproducir música</button>
-
-  <!-- Audio (debe existir cancion.mp3 en el repo) -->
+  <!-- Audio queda fuera de #contenido para que NUNCA se borre -->
   <audio id="musica" loop preload="auto">
     <source src="cancion.mp3" type="audio/mpeg">
     Tu navegador no soporta audio HTML5.
   </audio>
+
+  <!-- Botón música (también fuera de #contenido para que no desaparezca) -->
+  <button class="boton musica" id="btnMusica" onclick="toggleMusica()">🎵 Reproducir música</button>
+
+  <!-- Todo lo que cambia va aquí -->
+  <div id="contenido">
+    <h1>🐰 Conejita Armonía 💕, ¿quieres ser mi San Valentín? 🥺</h1>
+
+    <img id="kirby" src="kirby.png" width="150" alt="Kirby" />
+    <br />
+
+    <button class="boton si" onclick="aceptar()">Sí 💖</button>
+    <button class="boton no" onclick="rechazar()">No 😭</button>
+  </div>
 
   <script>
     let intentos = 0;
@@ -80,30 +91,31 @@
     ];
 
     function aceptar() {
-      document.body.innerHTML =
-        "<h1>SABÍA QUE DIRÍAS QUE SÍ 😍💖</h1>" +
-        "<img src='kirby_feliz.gif' width='200' alt='Kirby feliz'>" +
-        "<p>Te adoro princesa 😘💞</p>";
+      document.getElementById("contenido").innerHTML = `
+        <h1>SABÍA QUE DIRÍAS QUE SÍ 😍💖</h1>
+        <img src="kirby_feliz.gif" width="200" alt="Kirby feliz">
+        <p>Te adoro princesa 😘💞</p>
+      `;
     }
 
     function rechazar() {
       if (intentos < 5) {
         const btnNo = document.querySelector(".no");
-        btnNo.innerText = mensajesNo[intentos];
-
         const img = document.getElementById("kirby");
+
+        btnNo.innerText = mensajesNo[intentos];
         img.src = imagenes[Math.min(intentos + 1, imagenes.length - 1)];
 
         intentos++;
       } else {
-        document.body.innerHTML =
-          "<h1>De todas formas, estamos hechos el uno para el otro 😘💕</h1>" +
-          "<img src='kirby_triste.gif' width='200' alt='Kirby triste'>" +
-          "<p>No puedes huir del destino 💖</p>";
+        document.getElementById("contenido").innerHTML = `
+          <h1>De todas formas, estamos hechos el uno para el otro 😘💕</h1>
+          <img src="kirby_triste.gif" width="200" alt="Kirby triste">
+          <p>No puedes huir del destino 💖</p>
+        `;
       }
     }
 
-    // Música Play/Pause
     function toggleMusica() {
       const audio = document.getElementById("musica");
       const btn = document.getElementById("btnMusica");
@@ -111,18 +123,14 @@
       if (audio.paused) {
         audio.play()
           .then(() => { btn.innerText = "⏸️ Pausar música"; })
-          .catch(() => {
-            // Si el navegador bloquea, igual queda el botón para reintentar
-            btn.innerText = "🎵 Reproducir música";
-            alert("Tu navegador bloqueó la reproducción. Vuelve a tocar el botón para iniciar.");
-          });
+          .catch(() => { alert("Tu navegador bloqueó la reproducción. Toca el botón otra vez."); });
       } else {
         audio.pause();
         btn.innerText = "🎵 Reproducir música";
       }
     }
 
-    // Flores en movimiento
+    // Flores en movimiento (se mantienen aunque cambie #contenido)
     for (let i = 0; i < 15; i++) {
       const flor = document.createElement("img");
       flor.src = "Pink-Flower-PNG-HD-Image.png";
