@@ -1,86 +1,136 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Conejita Armonía 💖</title>
-    <style>
-        body {
-            background-color: #FFC0CB;
-            text-align: center;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
-        h1 {
-            font-size: 2em;
-        }
-        .flor {
-            position: absolute;
-            width: 50px;
-            animation: crecer 3s linear infinite;
-        }
-        @keyframes crecer {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .boton {
-            font-size: 1.5em;
-            padding: 10px 20px;
-            margin: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        .si {
-            background-color: lightgreen;
-        }
-        .no {
-            background-color: lightcoral;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Conejita Armonía 💖</title>
+
+  <style>
+    body {
+      background-color: #FFC0CB;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 { font-size: 2em; }
+
+    .flor {
+      position: absolute;
+      width: 50px;
+      animation: crecer 3s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes crecer {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .boton {
+      font-size: 1.5em;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .si { background-color: lightgreen; }
+    .no { background-color: lightcoral; }
+
+    .musica {
+      background-color: white;
+      border: 2px solid #ff69b4;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Conejita Armonía 💕, ¿quieres ser mi San Valentín? 🥺</h1>
-    <img id="kirby" src="kirby.png" width="150">
-    <br>
-    <button class="boton si" onclick="aceptar()">Sí 💖</button>
-    <button class="boton no" onclick="rechazar()">No 😭</button>
-    
-    <script>
-        let intentos = 0;
-        const imagenes = ["kirby1.gif", "kirby2.gif", "kirby3.gif", "kirby4.gif", "kirby5.gif"];
-        const mensajesNo = [
-            "Vamos, sé que quieres 😏",
-            "¿Estás segura? 🙃",
-            "Piensa bien tu decisión 😬",
-            "Última oportunidad 😳",
-            "No hay escapatoria... 😈"
-        ];
-        
-        function aceptar() {
-            document.body.innerHTML = "<h1>SABÍA QUE DIRÍAS QUE SÍ 😍💖</h1>" +
-                "<img src='kirby_feliz.gif' width='200'><p>Te adoro princesa 😘💞</p>";
-        }
-        
-        function rechazar() {
-            if (intentos < 4) {
-                document.querySelector(".no").innerText = mensajesNo[intentos];
-                document.getElementById("kirby").src = imagenes[intentos + 1];
-                intentos++;
-            } else {
-                document.body.innerHTML = "<h1>De todas formas, estamos hechos el uno para el otro 😘💕</h1>" +
-                    "<img src='kirby_triste.gif' width='200'><p>No puedes huir del destino, Carolina 💖</p>";
-            }
-        }
-        
-        // Flores en movimiento
-        for (let i = 0; i < 15; i++) {
-            let flor = document.createElement("img");
-            flor.src = "Pink-Flower-PNG-HD-Image.png";
-            flor.classList.add("flor");
-            flor.style.left = Math.random() * window.innerWidth + "px";
-            flor.style.top = Math.random() * window.innerHeight + "px";
-            document.body.appendChild(flor);
-        }
-    </script>
+  <h1>Conejita Armonía 💕, ¿quieres ser mi San Valentín? 🥺</h1>
+
+  <img id="kirby" src="kirby.png" width="150" alt="Kirby" />
+  <br />
+
+  <button class="boton si" onclick="aceptar()">Sí 💖</button>
+  <button class="boton no" onclick="rechazar()">No 😭</button>
+
+  <br />
+
+  <!-- Botón para música -->
+  <button class="boton musica" id="btnMusica" onclick="toggleMusica()">🎵 Reproducir música</button>
+
+  <!-- Audio (debe existir cancion.mp3 en el repo) -->
+  <audio id="musica" loop preload="auto">
+    <source src="cancion.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <script>
+    let intentos = 0;
+    const imagenes = ["kirby.png", "kirby1.gif", "kirby2.gif", "kirby3.gif", "kirby4.gif", "kirby5.gif"];
+    const mensajesNo = [
+      "Vamos, sé que quieres 😏",
+      "¿Estás segura? 🙃",
+      "Piensa bien tu decisión 😬",
+      "Última oportunidad 😳",
+      "No hay escapatoria... 😈"
+    ];
+
+    function aceptar() {
+      document.body.innerHTML =
+        "<h1>SABÍA QUE DIRÍAS QUE SÍ 😍💖</h1>" +
+        "<img src='kirby_feliz.gif' width='200' alt='Kirby feliz'>" +
+        "<p>Te adoro princesa 😘💞</p>";
+    }
+
+    function rechazar() {
+      if (intentos < 5) {
+        const btnNo = document.querySelector(".no");
+        btnNo.innerText = mensajesNo[intentos];
+
+        const img = document.getElementById("kirby");
+        img.src = imagenes[Math.min(intentos + 1, imagenes.length - 1)];
+
+        intentos++;
+      } else {
+        document.body.innerHTML =
+          "<h1>De todas formas, estamos hechos el uno para el otro 😘💕</h1>" +
+          "<img src='kirby_triste.gif' width='200' alt='Kirby triste'>" +
+          "<p>No puedes huir del destino 💖</p>";
+      }
+    }
+
+    // Música Play/Pause
+    function toggleMusica() {
+      const audio = document.getElementById("musica");
+      const btn = document.getElementById("btnMusica");
+
+      if (audio.paused) {
+        audio.play()
+          .then(() => { btn.innerText = "⏸️ Pausar música"; })
+          .catch(() => {
+            // Si el navegador bloquea, igual queda el botón para reintentar
+            btn.innerText = "🎵 Reproducir música";
+            alert("Tu navegador bloqueó la reproducción. Vuelve a tocar el botón para iniciar.");
+          });
+      } else {
+        audio.pause();
+        btn.innerText = "🎵 Reproducir música";
+      }
+    }
+
+    // Flores en movimiento
+    for (let i = 0; i < 15; i++) {
+      const flor = document.createElement("img");
+      flor.src = "Pink-Flower-PNG-HD-Image.png";
+      flor.classList.add("flor");
+      flor.style.left = Math.random() * window.innerWidth + "px";
+      flor.style.top = Math.random() * window.innerHeight + "px";
+      document.body.appendChild(flor);
+    }
+  </script>
 </body>
 </html>
