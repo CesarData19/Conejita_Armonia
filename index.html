@@ -47,28 +47,33 @@
     .si { background-color: lightgreen; }
     .no { background-color: lightcoral; }
 
+    /* BOTÓN DE MÚSICA ABAJO Y CENTRADO */
     .musica {
       background-color: white;
       border: 2px solid #ff69b4;
       position: fixed;
-      top: 15px;
-      right: 15px;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 2;
+      font-size: 1.2em;
+      padding: 12px 25px;
     }
   </style>
 </head>
 
 <body>
-  <!-- Audio queda fuera de #contenido para que NUNCA se borre -->
+  <!-- AUDIO (nunca se borra, por eso la música sigue sonando) -->
   <audio id="musica" loop preload="auto">
     <source src="cancion.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio HTML5.
   </audio>
 
-  <!-- Botón música (también fuera de #contenido para que no desaparezca) -->
-  <button class="boton musica" id="btnMusica" onclick="toggleMusica()">🎵</button>
+  <!-- BOTÓN DE MÚSICA -->
+  <button class="boton musica" id="btnMusica" onclick="toggleMusica()">
+    🎵 🐼
+  </button>
 
-  <!-- Todo lo que cambia va aquí -->
+  <!-- CONTENIDO QUE CAMBIA -->
   <div id="contenido">
     <h1>Conejita Armonía 🐰💕, ¿quieres ser mi San Valentín? 🥺</h1>
 
@@ -93,7 +98,7 @@
     function aceptar() {
       document.getElementById("contenido").innerHTML = `
         <h1>SABÍA QUE DIRÍAS QUE SÍ 😍💖</h1>
-        <img src="kirby_feliz.gif" width="200" alt="Kirby feliz">
+        <img src="kirby_feliz.gif" width="200">
         <p>Te adoro princesa 😘💞</p>
       `;
     }
@@ -110,7 +115,7 @@
       } else {
         document.getElementById("contenido").innerHTML = `
           <h1>De todas formas, estamos hechos el uno para el otro 😘💕</h1>
-          <img src="kirby_triste.gif" width="200" alt="Kirby triste">
+          <img src="kirby_triste.gif" width="200">
           <p>No puedes huir del destino 💖</p>
         `;
       }
@@ -121,16 +126,16 @@
       const btn = document.getElementById("btnMusica");
 
       if (audio.paused) {
-        audio.play()
-          .then(() => { btn.innerText = "⏸️"; })
-          .catch(() => { alert("Tu navegador bloqueó la reproducción. Toca el botón otra vez."); });
+        audio.play().then(() => {
+          btn.innerText = "⏸️ 🐼";
+        });
       } else {
         audio.pause();
-        btn.innerText = "🎵";
+        btn.innerText = "🎵 🐼";
       }
     }
 
-    // Flores en movimiento (se mantienen aunque cambie #contenido)
+    // FLORES EN MOVIMIENTO
     for (let i = 0; i < 15; i++) {
       const flor = document.createElement("img");
       flor.src = "Pink-Flower-PNG-HD-Image.png";
